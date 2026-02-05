@@ -9,6 +9,8 @@
 
 A comprehensive Python library for vector and matrix operations with a clean, Pythonic API. MatPy provides an intuitive interface for linear algebra operations, making it perfect for educational purposes, scientific computing, and mathematical applications.
 
+📚 **[Read the Documentation](https://njryan-boou.github.io/matpy/)** | 📦 **[PyPI Package](https://pypi.org/project/matpy-linalg/)** | 🐙 **[GitHub Repository](https://github.com/njryan-boou/matpy)**
+
 ## Features
 
 ### 🎯 Core Components
