@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "matpy-linalg"
-version = "0.1.0"
+version = "0.2.0"
 description = "A comprehensive Python library for vector and matrix operations with a clean, Pythonic API"
 readme = "README.md"
 authors = [
@@ -44,10 +44,10 @@ viz = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/yourusername/matpy"
-Documentation = "https://github.com/yourusername/matpy#readme"
-Repository = "https://github.com/yourusername/matpy"
-Issues = "https://github.com/yourusername/matpy/issues"
+Homepage = "https://github.com/njryan-boou/matpy"
+Documentation = "https://github.com/njryan-boou/matpy#readme"
+Repository = "https://github.com/njryan-boou/matpy"
+Issues = "https://github.com/njryan-boou/matpy/issues"
 
 [tool.setuptools]
 package-dir = {"" = "src"}
