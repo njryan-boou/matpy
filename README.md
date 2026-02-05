@@ -1,5 +1,11 @@
 # MatPy
 
+[![PyPI version](https://badge.fury.io/py/matpy-linalg.svg)](https://badge.fury.io/py/matpy-linalg)
+[![Python](https://img.shields.io/pypi/pyversions/matpy-linalg.svg)](https://pypi.org/project/matpy-linalg/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Downloads](https://pepy.tech/badge/matpy-linalg)](https://pepy.tech/project/matpy-linalg)
+[![GitHub stars](https://img.shields.io/github/stars/njryan-boou/matpy.svg)](https://github.com/njryan-boou/matpy/stargazers)
+
 A comprehensive Python library for vector and matrix operations with a clean, Pythonic API. MatPy provides an intuitive interface for linear algebra operations, making it perfect for educational purposes, scientific computing, and mathematical applications.
 
 ## Features
