@@ -1,5 +1,6 @@
 # MatPy
 
+[![Tests](https://github.com/njryan-boou/matpy/actions/workflows/tests.yml/badge.svg)](https://github.com/njryan-boou/matpy/actions/workflows/tests.yml)
 [![PyPI version](https://badge.fury.io/py/matpy-linalg.svg)](https://badge.fury.io/py/matpy-linalg)
 [![Python](https://img.shields.io/pypi/pyversions/matpy-linalg.svg)](https://pypi.org/project/matpy-linalg/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
