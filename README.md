@@ -42,11 +42,23 @@ A comprehensive Python library for vector and matrix operations with a clean, Py
 ### 🧮 Linear Algebra Solvers
 
 - **Linear Systems**: Solve Ax = b using multiple methods
+  - Gaussian elimination with partial pivoting
+  - LU decomposition
+  - Cramer's rule
+  - Least squares (for overdetermined systems)
+- **Differential Equations**: Systems of linear ODEs
+  - Homogeneous systems (dx/dt = Ax)
+  - Non-homogeneous systems (dx/dt = Ax + b(t))
+  - Matrix exponential computation
+  - Euler method and Runge-Kutta 4
+
+## Installation
+
 ### From Source
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/matpy.git
+git clone https://github.com/njryan-boou/matpy.git
 cd matpy
 
 # Install core library
@@ -70,7 +82,14 @@ pip install matpy-linalg
 
 # With visualization support
 pip install matpy-linalg[viz]
-### 🌐 Coordinate Systems
+```
+
+## Quick Start
+
+### Vector Examples
+
+```python
+from matpy
 
 - **2D Conversions**: Cartesian ↔ Polar ↔ Complex
 - **3D Conversions**: Cartesian ↔ Spherical ↔ Cylindrical
@@ -85,8 +104,12 @@ pip install matpy-linalg[viz]
 - **Coordinate Systems**: Side-by-side comparison of coordinate representations
 - **Customizable**: Colors, labels, titles, and full matplotlib control
 
-## Installation
-.vector.core import Vector
+## Quick Start
+
+### Vector Examples
+
+```python
+from matpy.vector.core import Vector
 from matpy.vector import ops
 
 # Create vectors (n-dimensional)
@@ -504,17 +527,6 @@ blaRecent Updates
 - Centralized validation and utility modules
 - 300+ unit tests with comprehensive coverage
 
-## Future Enhancements
-
-- [ ] Additional matrix decompositions (QR, SVD, Cholesky)
-- [ ] Sparse matrix support
-- [ ] Higher-dimensional tensors
-- [ ] Complex number support for matrices
-- [ ] Performance optimizations with optional NumPy backend
-- [ ] Additional numerical ODE solvers
-- [ ] Eigenvalue/eigenvector computation for larger matrices
-- [ ] Interactive visualization widgetsm2)` - Join top-to-bottom
-
 **Property Tests:**
 - `is_diagonal(m)`, `is_identity(m)`, `is_upper_triangular(m)`, `is_lower_triangular(m)`
 
@@ -632,13 +644,14 @@ mypy src/
 
 ## Future Enhancements
 
-- [ ] Matrix decomposition (LU, QR, SVD)
+- [ ] Additional matrix decompositions (QR, SVD, Cholesky)
 - [ ] Sparse matrix support
 - [ ] Higher-dimensional tensors
-- [ ] Visualization module with matplotlib
-- [ ] Performance optimizations with NumPy backend (optional)
-- [ ] Additional matrix operations (Cholesky, Schur, etc.)
-- [ ] Complex number support
+- [ ] Complex number support for matrices
+- [ ] Performance optimizations with optional NumPy backend
+- [ ] Additional numerical ODE solvers
+- [ ] Eigenvalue/eigenvector computation for larger matrices
+- [ ] Interactive visualization widgetsm2)
 
 ## License
 
@@ -654,4 +667,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 Noah Ryan - njryan2005@gmail.com
 
-Project Link: [https://github.com/yourusername/matpy](https://github.com/yourusername/matpy)
+Project Link: [https://github.com/njryan-boou/matpy](https://github.com/njryan-boou/matpy)
