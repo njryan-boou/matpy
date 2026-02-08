@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "matpy-linalg"
-version = "0.2.0"
+version = "0.3.0"
 description = "A comprehensive Python library for vector and matrix operations with a clean, Pythonic API"
 readme = "README.md"
 authors = [

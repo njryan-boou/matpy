@@ -1,8 +1,7 @@
 from __future__ import annotations
 import math
 
-from ..error import IndexError as MatPyIndexError
-from ..core import validate, utils
+from ..core import validate
 
 
 class Vector:
@@ -15,6 +14,8 @@ class Vector:
     Note:
         For convenience, 2D and 3D vectors can access components via x, y, z properties.
     """
+    
+    __slots__ = ('components',)
     
     # ==================== Initialization ====================
     

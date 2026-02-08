@@ -41,8 +41,9 @@ A comprehensive Python library for vector and matrix operations with a clean, Py
 - **Arithmetic**: Element-wise operations, matrix multiplication (`@`), power (`**`)
 - **Basic Operations**: Transpose, trace, determinant, rank
 - **Advanced Operations**: Inverse, adjugate, cofactor, matrix exponential
+- **Eigenvalues & Eigenvectors**: For 2x2 and 3x3 matrices (supports complex eigenvalues)
 - **Matrix Creation**: Zeros, ones, identity, diagonal, from rows/columns
-- **Matrix Properties**: Symmetric, orthogonal, singular, triangular, diagonal
+- **Matrix Properties**: Symmetric, orthogonal, singular, triangular, diagonal, identity
 - **Hadamard Product**: Element-wise multiplication
 - **Kronecker Product**: Tensor product of matrices
 - **Row Operations**: Row echelon form, reduced row echelon form
@@ -59,7 +60,8 @@ A comprehensive Python library for vector and matrix operations with a clean, Py
   - Homogeneous systems (dx/dt = Ax)
   - Non-homogeneous systems (dx/dt = Ax + b(t))
   - Matrix exponential computation
-  - Euler method and Runge-Kutta 4
+  - Analytical solutions with complex eigenvalue support
+  - Euler method and Runge-Kutta 4 (numerical methods)
 
 ### 🌐 Coordinate Systems
 
@@ -202,14 +204,20 @@ hadamard = ops.hadamard_product(m1, m2)  # Element-wise multiplication
 kronecker = ops.kronecker_product(m1, m2)
 rref = ops.reduced_row_echelon_form(m1)
 
-# Matrix properties
+# Matrix properties (instance methods)
 is_square = m1.is_square()
 is_symmetric = m1.is_symmetric()
 is_singular = m1.is_singular()
 is_invertible = m1.is_invertible()
 is_orthogonal = m1.is_orthogonal()
-is_diagonal = ops.is_diagonal(m1)
-is_identity = ops.is_identity(m1)
+is_diagonal = m1.is_diagonal()       # Now instance method
+is_identity = m1.is_identity()       # Now instance method
+is_upper_tri = m1.is_upper_triangular()  # New!
+is_lower_tri = m1.is_lower_triangular()  # New!
+
+# Eigenvalues and Eigenvectors (2x2 and 3x3)
+eigenvalues = m1.eigenvalues()      # Returns List[Union[float, complex]]
+eigenvectors = m1.eigenvectors()    # Returns List[Vector]
 
 # Concatenation
 h_concat = ops.concatenate_horizontal(m1, m2)
@@ -501,11 +509,17 @@ except VectorDimensionError as e:
 - `trace()` - Sum of diagonal elements
 - `rank()` - Matrix rank
 - `cofactor(row, col)` - Cofactor at position
+- `eigenvalues()` - Eigenvalues for 2x2 and 3x3 matrices (supports complex eigenvalues)
+- `eigenvectors()` - Eigenvectors for 2x2 and 3x3 matrices (supports complex eigenvectors)
 - `is_square()` - Check if square
 - `is_symmetric()` - Check if M = M^T
 - `is_singular()` - Check if determinant ≈ 0
 - `is_invertible()` - Check if non-singular
 - `is_orthogonal()` - Check if M^T M = I
+- `is_diagonal()` - Check if all non-diagonal elements are zero
+- `is_identity()` - Check if matrix is the identity matrix
+- `is_upper_triangular()` - Check if all elements below diagonal are zero
+- `is_lower_triangular()` - Check if all elements above diagonal are zero
 
 **Operators:**
 - `+`, `-` - Matrix addition/subtraction
@@ -542,7 +556,7 @@ except VectorDimensionError as e:
 - `concatenate_vertical(m1, m2)` - Join top-to-bottom
 
 **Property Tests:**
-- `is_diagonal(m)`, `is_identity(m)`, `is_upper_triangular(m)`, `is_lower_triangular(m)`
+Note: These are primarily available as instance methods on Matrix objects (see Matrix Class above). The ops module focuses on factory functions and multi-matrix operations.
 
 ### Linear Algebra Solvers
 
@@ -555,7 +569,6 @@ except VectorDimensionError as e:
 
 **Differential Equations:**
 - `solve_linear_ode_system_homogeneous(A, x0, t)` - Solve dx/dt = Ax
-- `solve_linear_ode_system_nonhomogeneous(A, x0, b_func, t)` - Solve dx/dt = Ax + b(t)
 - `matrix_exponential(A, t)` - Compute e^(At)
 - `euler_method(A, x0, t_final, steps)` - Numerical ODE solver
 - `runge_kutta_4(A, x0, t_final, steps)` - RK4 numerical solver
@@ -623,7 +636,20 @@ python -m unittest tests.test_matrix_core
 
 ## Recent Updates
 
-✅ **v0.1.0 (Current)**
+✅ **v0.3.0 (Current)**
+- **Code Reorganization**: Cleaner separation between instance methods (core.py) and factory functions (ops.py)
+- **Complex Eigenvalues**: Eigenvalues and eigenvectors now support complex numbers for 2x2 and 3x3 matrices
+- **New Instance Methods**: Added `is_diagonal()`, `is_identity()`, `is_upper_triangular()`, `is_lower_triangular()` as Matrix instance methods
+- **Enhanced ODE Solver**: Now handles complex eigenvalues correctly in analytical solutions
+- **Performance Optimizations**: 
+  - `__slots__` added to Vector and Matrix classes (~40% memory reduction)
+  - Binary exponentiation for matrix power (O(log n) instead of O(n))
+  - Eliminated code duplication with helper methods
+- **Code Quality**: Consolidated magic numbers into `DEFAULT_TOLERANCE` constant across modules
+- **Improved API**: All matrix property checks now available as instance methods for cleaner, more intuitive code
+- **Comprehensive Test Coverage**: Added 20 new tests for complex eigenvalue support (186 total tests)
+
+✅ **v0.1.0**
 - N-dimensional vector support (2D, 3D, 4D+)
 - Complete linear systems solver suite
 - ODE solver for systems of differential equations
@@ -631,17 +657,18 @@ python -m unittest tests.test_matrix_core
 - Comprehensive visualization module with matplotlib
 - Advanced matrix operations (Hadamard, Kronecker products, RREF)
 - Centralized validation and utility modules
-- 300+ unit tests with comprehensive coverage
+- 166 unit tests with comprehensive coverage
 
 ## Future Enhancements
 
 - [ ] Additional matrix decompositions (QR, SVD, Cholesky)
 - [ ] Sparse matrix support
 - [ ] Higher-dimensional tensors
-- [ ] Complex number support for matrices
+- [x] ~~Complex number support for matrices~~ ✅ Implemented in v0.3.0
 - [ ] Performance optimizations with optional NumPy backend
 - [ ] Additional numerical ODE solvers
-- [ ] Eigenvalue/eigenvector computation for larger matrices
+- [x] ~~Eigenvalue/eigenvector computation for 2x2 and 3x3 matrices~~ ✅ Implemented in v0.3.0
+- [ ] Eigenvalue/eigenvector computation for larger matrices (4x4+)
 - [ ] Interactive visualization widgets
 
 ## License

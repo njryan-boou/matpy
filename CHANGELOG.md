@@ -5,78 +5,49 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.2.0] - 2026-02-05
+## [Unreleased]
+
+## [0.3.0] - 2026-02-08
 
 ### Added
-- **N-dimensional vector support** - Vectors now support arbitrary dimensions (2D, 3D, 4D+)
-- **Linear system solvers module** (`matrix/solve.py`)
-  - Gaussian elimination with partial pivoting
-  - LU decomposition solver
-  - Cramer's rule implementation
-  - Least squares for overdetermined systems
-- **Differential equation solvers**
-  - Homogeneous ODE systems (dx/dt = Ax)
-  - Non-homogeneous ODE systems (dx/dt = Ax + b(t))
-  - Matrix exponential computation
-  - Euler method numerical solver
-  - Runge-Kutta 4 numerical solver
-- **Coordinate system conversions** (`vector/coordinates.py`)
-  - 2D: Cartesian ↔ Polar ↔ Complex
-  - 3D: Cartesian ↔ Spherical ↔ Cylindrical
-  - `VectorCoordinates` class with easy API
-- **Visualization module** (optional, requires matplotlib)
-  - 2D and 3D vector plotting (`plot_vector_2d`, `plot_vectors_2d`, `plot_vector_3d`, `plot_vectors_3d`)
-  - Vector field visualization (`plot_vector_field_2d`)
-  - Matrix heatmaps and grids (`plot_matrix_heatmap`, `plot_matrix_grid`)
-  - Linear transformation visualization (`plot_transformation_2d`, `plot_transformation_3d`)
-  - Coordinate system comparison plots (`plot_coordinate_systems_2d`, `plot_coordinate_systems_3d`)
-- **Advanced matrix operations**
-  - Hadamard product (element-wise multiplication)
-  - Kronecker product (tensor product)
-  - Row echelon form and RREF
-  - Matrix concatenation (horizontal/vertical)
-- **Matrix operations module** (`matrix/ops.py`)
-  - Matrix creation utilities (`zeros`, `ones`, `identity`, `diagonal`, `from_rows`, `from_columns`)
-  - Property tests (`is_diagonal`, `is_identity`, `is_upper_triangular`, `is_lower_triangular`)
-- **Vector operations module** (`vector/ops.py`)
-  - Advanced vector operations (projection, rejection, reflection, distance)
-  - Geometric functions (angle calculation, component-wise min/max)
-  - Interpolation (lerp, clamping)
-  - Parallel and perpendicular tests
-- **Core utilities**
-  - Centralized validation (`core/validate.py`)
-  - Centralized utility functions (`core/utils.py`)
-- **Comprehensive examples**
-  - `matrix_examples.py` - Complete matrix operations showcase
-  - `visualization_examples.py` - Visualization demonstrations
-- **GitHub Actions CI/CD**
-  - Automated testing across multiple Python versions (3.7-3.12)
-  - Multi-platform testing (Ubuntu, Windows, macOS)
-  - Code coverage reporting
-  - Automated PyPI publishing on releases
-- **Project badges** in README
-  - Build status
-  - PyPI version
-  - Python versions
-  - License
-  - Downloads
-  - GitHub stars
+- **Complex eigenvalue support** - Eigenvalues and eigenvectors now handle complex numbers
+  - 2x2 matrices return complex conjugate pairs when discriminant < 0
+  - 3x3 matrices return all eigenvalues including complex conjugates
+  - Eigenvectors normalized correctly for complex numbers using `abs()` for magnitude
+- **New Matrix instance methods** - Cleaner API with property checks as instance methods
+  - `is_diagonal()` - Check if all non-diagonal elements are zero
+  - `is_identity()` - Check if matrix is the identity matrix
+  - `is_upper_triangular()` - Check if all elements below diagonal are zero
+  - `is_lower_triangular()` - Check if all elements above diagonal are zero
+- **Memory optimization** - `__slots__` added to Vector and Matrix classes
+  - ~40% memory reduction per instance
+  - Faster attribute access
+  - Prevents accidental attribute creation
 
 ### Changed
-- **BREAKING**: Vector constructor now uses `Vector(*args)` instead of `Vector(x=0, y=0, z=0)`
-  - `Vector(1, 2, 3)` - 3D vector (same as before)
-  - `Vector(1, 2)` - 2D vector (now possible)
-  - `Vector(1, 2, 3, 4)` - 4D vector (now possible)
-- Reorganized module structure for better organization
-- Improved error messages and validation throughout
-- Enhanced documentation and examples
-- Updated README with comprehensive feature documentation
+- **Code reorganization** - Cleaner separation between instance methods and factory functions
+  - `core.py` - Single-matrix operations as instance/static methods
+  - `ops.py` - Factory functions and multi-matrix operations only
+  - Removed ~170 lines of duplicate wrapper functions
+- **ODE solver improvements** - Enhanced differential equation solver
+  - Now handles complex eigenvalues correctly in analytical solutions
+  - 1x1 ODE systems use `cmath.exp()` for complex eigenvalues
+  - 2x2 systems fall back to matrix exponential for complex eigenvalues
+- **Performance improvements**
+  - Matrix exponentiation now uses binary exponentiation (O(log n) instead of O(n))
+  - Extracted helper methods to eliminate code duplication
+  - `__truediv__` optimized using `_scalar_multiply(1.0 / scalar)`
+- **Code quality**
+  - Added `DEFAULT_TOLERANCE = 1e-10` constant across modules
+  - Replaced all hardcoded tolerance values with named constant
+  - Removed redundant `__rmatmul__` method
+  - Extracted `_scalar_multiply()` and `_matrix_multiply()` helpers
+  - Reduced code duplication by ~35 lines
 
 ### Fixed
-- Various edge cases in matrix operations
-- Numerical stability improvements in calculations
-- Type hint corrections and improvements
-- Import structure for better module organization
+- Eigenvector normalization error when handling complex eigenvectors
+- ODE solver compatibility with complex eigenvalues
+- Matrix power operation efficiency
 
 ## [0.1.0] - 2025-12-20
 
@@ -91,5 +62,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Pure Python implementation (no external dependencies)
 - Examples and documentation
 
+[0.3.0]: https://github.com/njryan-boou/matpy/releases/tag/v0.3.0
 [0.2.0]: https://github.com/njryan-boou/matpy/releases/tag/v0.2.0
 [0.1.0]: https://github.com/njryan-boou/matpy/releases/tag/v0.1.0

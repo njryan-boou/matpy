@@ -11,6 +11,9 @@ from typing import List, Tuple
 from .core import Matrix
 from ..core import validate, utils
 
+# Default tolerance for floating point comparisons
+DEFAULT_TOLERANCE = 1e-10
+
 
 # ==================== Matrix Creation ====================
 
@@ -107,182 +110,6 @@ def from_columns(cols: List[List[float]]) -> Matrix:
     data = [[cols[j][i] for j in range(num_cols)] for i in range(num_rows)]
     return Matrix(num_rows, num_cols, data)
 
-
-# ==================== Basic Matrix Operations ====================
-
-def transpose(matrix: Matrix) -> Matrix:
-    """
-    Return the transpose of a matrix.
-    
-    Args:
-        matrix: The matrix to transpose
-    
-    Returns:
-        Transposed matrix
-    """
-    return matrix.transpose()
-
-
-def trace(matrix: Matrix) -> float:
-    """
-    Calculate the trace (sum of diagonal elements).
-    
-    Args:
-        matrix: The matrix (must be square)
-    
-    Returns:
-        The trace value
-    """
-    return matrix.trace()
-
-
-def determinant(matrix: Matrix) -> float:
-    """
-    Calculate the determinant of a matrix.
-    
-    Args:
-        matrix: The matrix (must be square)
-    
-    Returns:
-        The determinant value
-    """
-    return matrix.determinant()
-
-
-def inverse(matrix: Matrix) -> Matrix:
-    """
-    Calculate the inverse of a matrix.
-    
-    Args:
-        matrix: The matrix to invert (must be square and non-singular)
-    
-    Returns:
-        The inverse matrix
-    """
-    return matrix.inverse()
-
-
-def rank(matrix: Matrix) -> int:
-    """
-    Calculate the rank of a matrix.
-    
-    Args:
-        matrix: The matrix
-    
-    Returns:
-        The rank (number of linearly independent rows/columns)
-    """
-    return matrix.rank()
-
-
-# ==================== Matrix Properties ====================
-
-def is_square(matrix: Matrix) -> bool:
-    """Check if matrix is square."""
-    return matrix.is_square()
-
-
-def is_symmetric(matrix: Matrix) -> bool:
-    """Check if matrix is symmetric (M = M^T)."""
-    return matrix.is_symmetric()
-
-
-def is_singular(matrix: Matrix) -> bool:
-    """Check if matrix is singular (determinant = 0)."""
-    return matrix.is_singular()
-
-
-def is_invertible(matrix: Matrix) -> bool:
-    """Check if matrix is invertible (non-singular)."""
-    return matrix.is_invertible()
-
-
-def is_orthogonal(matrix: Matrix) -> bool:
-    """Check if matrix is orthogonal (M^T * M = I)."""
-    return matrix.is_orthogonal()
-
-
-def is_diagonal(matrix: Matrix) -> bool:
-    """
-    Check if matrix is diagonal (all non-diagonal elements are zero).
-    
-    Args:
-        matrix: The matrix to check
-    
-    Returns:
-        True if diagonal, False otherwise
-    """
-    if not matrix.is_square():
-        return False
-    
-    for i in range(matrix.rows):
-        for j in range(matrix.cols):
-            if i != j and not validate.approx_zero(matrix.data[i][j]):
-                return False
-    return True
-
-
-def is_identity(matrix: Matrix) -> bool:
-    """
-    Check if matrix is an identity matrix.
-    
-    Args:
-        matrix: The matrix to check
-    
-    Returns:
-        True if identity matrix, False otherwise
-    """
-    if not matrix.is_square():
-        return False
-    
-    for i in range(matrix.rows):
-        for j in range(matrix.cols):
-            expected = 1.0 if i == j else 0.0
-            if not utils.is_close(matrix.data[i][j], expected):
-                return False
-    return True
-
-
-def is_upper_triangular(matrix: Matrix) -> bool:
-    """
-    Check if matrix is upper triangular (all elements below diagonal are zero).
-    
-    Args:
-        matrix: The matrix to check
-    
-    Returns:
-        True if upper triangular, False otherwise
-    """
-    if not matrix.is_square():
-        return False
-    
-    for i in range(matrix.rows):
-        for j in range(i):
-            if not validate.approx_zero(matrix.data[i][j]):
-                return False
-    return True
-
-
-def is_lower_triangular(matrix: Matrix) -> bool:
-    """
-    Check if matrix is lower triangular (all elements above diagonal are zero).
-    
-    Args:
-        matrix: The matrix to check
-    
-    Returns:
-        True if lower triangular, False otherwise
-    """
-    if not matrix.is_square():
-        return False
-    
-    for i in range(matrix.rows):
-        for j in range(i + 1, matrix.cols):
-            if not validate.approx_zero(matrix.data[i][j]):
-                return False
-    return True
-
-
 # ==================== Advanced Operations ====================
 
 def power(matrix: Matrix, exponent: int) -> Matrix:
@@ -297,7 +124,6 @@ def power(matrix: Matrix, exponent: int) -> Matrix:
         Matrix raised to the power
     """
     return matrix ** exponent
-
 
 def hadamard_product(m1: Matrix, m2: Matrix) -> Matrix:
     """
@@ -328,7 +154,6 @@ def hadamard_product(m1: Matrix, m2: Matrix) -> Matrix:
     ]
     return Matrix(m1.rows, m1.cols, result_data)
 
-
 def kronecker_product(m1: Matrix, m2: Matrix) -> Matrix:
     """
     Calculate the Kronecker product of two matrices.
@@ -353,7 +178,6 @@ def kronecker_product(m1: Matrix, m2: Matrix) -> Matrix:
     
     return Matrix(result_rows, result_cols, result_data)
 
-
 def frobenius_norm(matrix: Matrix) -> float:
     """
     Calculate the Frobenius norm of a matrix.
@@ -366,8 +190,7 @@ def frobenius_norm(matrix: Matrix) -> float:
     """
     return abs(matrix)
 
-
-def row_echelon_form(matrix: Matrix) -> Matrix:
+def REF(matrix: Matrix) -> Matrix:
     """
     Convert matrix to row echelon form using Gaussian elimination.
     
@@ -384,7 +207,7 @@ def row_echelon_form(matrix: Matrix) -> Matrix:
         # Find pivot
         found_pivot = False
         for row in range(pivot_row, result.rows):
-            if abs(result.data[row][col]) > 1e-10:
+            if abs(result.data[row][col]) > DEFAULT_TOLERANCE:
                 # Swap rows
                 if row != pivot_row:
                     result.data[pivot_row], result.data[row] = result.data[row], result.data[pivot_row]
@@ -409,8 +232,7 @@ def row_echelon_form(matrix: Matrix) -> Matrix:
     
     return result
 
-
-def reduced_row_echelon_form(matrix: Matrix) -> Matrix:
+def RREF(matrix: Matrix) -> Matrix:
     """
     Convert matrix to reduced row echelon form.
     
@@ -420,14 +242,14 @@ def reduced_row_echelon_form(matrix: Matrix) -> Matrix:
     Returns:
         Matrix in reduced row echelon form
     """
-    result = row_echelon_form(matrix)
+    result = REF(matrix)
     
     # Back substitution to make it reduced
     for i in range(min(result.rows, result.cols) - 1, -1, -1):
         # Find leading 1
         leading_col = None
         for j in range(result.cols):
-            if abs(result.data[i][j] - 1.0) < 1e-10:
+            if abs(result.data[i][j] - 1.0) < DEFAULT_TOLERANCE:
                 leading_col = j
                 break
         
@@ -441,7 +263,6 @@ def reduced_row_echelon_form(matrix: Matrix) -> Matrix:
                 result.data[row][j] -= factor * result.data[i][j]
     
     return result
-
 
 def concatenate_horizontal(m1: Matrix, m2: Matrix) -> Matrix:
     """
@@ -473,7 +294,6 @@ def concatenate_horizontal(m1: Matrix, m2: Matrix) -> Matrix:
     ]
     return Matrix(m1.rows, m1.cols + m2.cols, result_data)
 
-
 def concatenate_vertical(m1: Matrix, m2: Matrix) -> Matrix:
     """
     Concatenate two matrices vertically (stacked).
@@ -500,3 +320,4 @@ def concatenate_vertical(m1: Matrix, m2: Matrix) -> Matrix:
     
     result_data = m1.data + m2.data
     return Matrix(m1.rows + m2.rows, m1.cols, result_data)
+
